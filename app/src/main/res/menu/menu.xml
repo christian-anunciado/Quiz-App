@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_all_questions"
+            android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+            android:title="All Questions" />
+        <item
+            android:id="@+id/nav_recent"
+            android:icon="@drawable/ic_baseline_access_time_24"
+            android:title="Recent" />
+        <item
+            android:id="@+id/nav_answered"
+            android:icon="@drawable/ic_baseline_check_24"
+            android:title="Answered" />
+        <item
+            android:id="@+id/nav_unanswered"
+            android:icon="@drawable/ic_baseline_clear_24"
+            android:title="Not answered" />
+    </group>
+
+    <item android:title="Misc">
+        <menu>
+            <item
+                android:icon="@drawable/ic_baseline_settings_24"
+                android:title="Settings" />
+            <item
+                android:icon="@drawable/ic_baseline_help_24"
+                android:title="Help and Feedback" />
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/vectorstock_5222239">
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/bungee"
+        android:gravity="center"
+        android:text="Category"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="35sp" />
+
+    <Button
+        android:id="@+id/btn_category_bugtong"
+        android:elevation="3dp"
+        android:background="@drawable/button_default_bg"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Bugtong"
+        android:fontFamily="@font/baloo"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/btn_category_food"
+        android:elevation="3dp"
+        android:background="@drawable/button_default_bg"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Food"
+        android:fontFamily="@font/baloo"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/btn_category_history"
+        android:elevation="3dp"
+        android:background="@drawable/button_default_bg"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="History"
+        android:fontFamily="@font/baloo"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/btn_category_geography"
+        android:elevation="3dp"
+        android:background="@drawable/button_default_bg"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Geography"
+        android:fontFamily="@font/baloo"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/btn_category_random"
+        android:elevation="3dp"
+        android:background="@drawable/button_default_bg"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Random"
+        android:fontFamily="@font/baloo"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/btn_category_play"
+        android:background="@drawable/play_option_bg"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="18dp"
+        android:text="Start"
+        android:fontFamily="@font/baloo"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
+
+
+
+
+</LinearLayout>
