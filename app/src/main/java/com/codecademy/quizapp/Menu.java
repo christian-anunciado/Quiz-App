@@ -46,9 +46,9 @@ public class Menu extends AppCompatActivity {
         loadData();
 
         if(MUSIC){
-            doBindService();
             Intent i = new Intent(Menu.this,MusicService.class);
             startService(i);}
+            doBindService();
 
 
         play.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +57,8 @@ public class Menu extends AppCompatActivity {
                 Intent i = new Intent(Menu.this, CategoryActivity.class);
                 startActivity(i);
 //                finish();
+                doUnbindService();
+
             }
         });
 
@@ -65,7 +67,8 @@ public class Menu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(Menu.this,SettingsActivity.class);
                 startActivity(i);
-                finish();
+//                finish();
+                doUnbindService();
             }
         });
 

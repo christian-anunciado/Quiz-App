@@ -41,17 +41,26 @@ public class SettingsActivity extends AppCompatActivity {
         createNew = findViewById(R.id.settings_createNew);
         music = findViewById(R.id.settings_switch_music);
         sound = findViewById(R.id.settings_switch_sound);
+
+
         loadData();
+
 
         music.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     Toast.makeText(SettingsActivity.this,"Music On",Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(SettingsActivity.this, MusicService.class);
+                    startService(i);
+                    doBindService();
                     MUSIC = true;
                 }
                 else {
                     Toast.makeText(SettingsActivity.this,"Music Off",Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(SettingsActivity.this, MusicService.class);
+                    stopService(i);
+                    doUnbindService();
                     MUSIC = false;
                 }
                 saveData();
@@ -93,6 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent i = new Intent(getApplicationContext(),Menu.class);
+        doUnbindService();
         startActivity(i);
         finish();
         super.onBackPressed();
@@ -108,13 +118,12 @@ public class SettingsActivity extends AppCompatActivity {
     }
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("mData", MODE_PRIVATE);
-//        String user = sharedPreferences.getString("name", "");
+        NAME = sharedPreferences.getString("name", "");
         MUSIC = sharedPreferences.getBoolean("music",true);
         SOUND = sharedPreferences.getBoolean("sound",true);
 
         music.setChecked(MUSIC);
         sound.setChecked(SOUND);
-
     }
 
     public void clearData() {
@@ -282,5 +291,19 @@ public class SettingsActivity extends AppCompatActivity {
             unbindService(Scon);
             mIsBound = false;
         }
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mServ.pauseMusic();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mServ.resumeMusic();
     }
 }
