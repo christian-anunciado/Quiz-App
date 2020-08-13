@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QuizApp</string>
+    <string name="app_name">Pinoy Quiz</string>
     <string name="welcome">Welcome</string>
     <string name="quizapp">Pinoy Quiz</string>
     <string name="please_enter_your_name">Please enter your name</string>
