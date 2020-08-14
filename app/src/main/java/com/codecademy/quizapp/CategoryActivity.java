@@ -1,6 +1,5 @@
 package com.codecademy.quizapp;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +9,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import java.util.ArrayList;
 
 public class CategoryActivity extends AppCompatActivity implements View.OnClickListener {
@@ -19,6 +16,8 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
     private Button bugtong,food,history,geography,play,random;
     private int category = 0;
     private String key = "CATEGORY";
+
+    private MusicService mServ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,28 +78,20 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
     }
     @Override
     public void onBackPressed() {
-        setTheme(R.style.NoActionBarTheme);
-        MaterialAlertDialogBuilder dialogs= new MaterialAlertDialogBuilder(CategoryActivity.this);
-        dialogs.setCancelable(true);
-        dialogs.setTitle("Return to Menu?");
-
-        dialogs.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        dialogs.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent i = new Intent(getApplicationContext(),Menu.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        dialogs.create().show();
+        Intent i = new Intent(CategoryActivity.this, Menu.class);
+        startActivity(i);
+        finish();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mServ != null) {
+
+            mServ.resumeMusic();
+        }
+    }
+
     void defaultOption() {
         ArrayList<Button> options = new ArrayList<Button>();
         options.add(0, bugtong);

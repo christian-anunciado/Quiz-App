@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,7 +27,10 @@ public class Menu extends AppCompatActivity {
     private boolean MUSIC;
     private boolean SOUND;
 
-    private MusicService musicService;
+    private HomeWatcher mHomeWatcher = new HomeWatcher(this);
+    private boolean mIsBound = false;
+    private MusicService mServ;
+
 
     private long mTIME;
     private Toast toast;
@@ -45,18 +49,40 @@ public class Menu extends AppCompatActivity {
         settings = findViewById(R.id.btn_menu_settings);
         loadData();
 
-        if(MUSIC){
-            Intent i = new Intent(Menu.this,MusicService.class);
-            startService(i);}
+
+
+
+        if (MUSIC) {
+            Intent i = new Intent(Menu.this,
+                    MusicService.class);
+            startService(i);
             doBindService();
+
+            mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
+                @Override
+                public void onHomePressed() {
+                    if (mServ != null) {
+                        mServ.pauseMusic();
+                    }
+                }
+                @Override
+                public void onHomeLongPressed() {
+                    if (mServ != null) {
+                        mServ.pauseMusic();
+                    }
+                }
+            });
+            mHomeWatcher.startWatch();
+        }
 
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Menu.this, CategoryActivity.class);
+                Intent i = new Intent(Menu.this,
+                        CategoryActivity.class);
                 startActivity(i);
-//                finish();
+                finish();
                 doUnbindService();
 
             }
@@ -65,48 +91,78 @@ public class Menu extends AppCompatActivity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Menu.this,SettingsActivity.class);
+                Intent i = new Intent(Menu.this,
+                        SettingsActivity.class);
                 startActivity(i);
-//                finish();
+                finish();
                 doUnbindService();
             }
         });
 
     }
-    public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("mData", MODE_PRIVATE);
-        String user = sharedPreferences.getString("name", "");
-        MUSIC = sharedPreferences.getBoolean("music",true);
-        SOUND = sharedPreferences.getBoolean("sound",true);
 
-        if(!user.isEmpty()) {
+    public void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("mData",
+                MODE_PRIVATE);
+        String user = sharedPreferences.getString("name",
+                "");
+        MUSIC = sharedPreferences.getBoolean("music",
+                true);
+        SOUND = sharedPreferences.getBoolean("sound",
+                true);
+
+        if (!user.isEmpty()) {
             name.setText("Hi \n" + user + "!");
             User_Name = user;
         }
     }
 
-
-
     @Override
     protected void onPause() {
-       // musicService.pauseMusic();
+
         super.onPause();
+        PowerManager pm = (PowerManager)
+                getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = false;
+        if (pm != null) {
+            isScreenOn = pm.isInteractive();
+        }
+
+        if (!isScreenOn) {
+            if (mServ != null) {
+                mServ.pauseMusic();
+            }
+        }
+
+
     }
 
-//    @Override
-//    protected void onResume() {
-//        musicService.resumeMusic();
-//        super.onResume();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mServ != null) {
+            mServ.resumeMusic();
+        }
+
+    }
+
 
     @Override
     public void onBackPressed() {
 
         if (mTIME + 2000 > System.currentTimeMillis()) {
             toast.cancel();
+            Intent music = new Intent();
+        music.setClass(this,
+                MusicService.class);
+        stopService(music);
+        mHomeWatcher.stopWatch();
+        doUnbindService();
             super.onBackPressed();
         } else {
-            toast = Toast.makeText(Menu.this,"Press again to exit", Toast.LENGTH_SHORT);
+            toast = Toast.makeText(Menu.this,
+                    "Press again to exit",
+                    Toast.LENGTH_SHORT);
             toast.show();
         }
         mTIME = System.currentTimeMillis();
@@ -114,13 +170,12 @@ public class Menu extends AppCompatActivity {
 
     }
 
-    private boolean mIsBound = false;
-    private MusicService mServ;
-    private ServiceConnection Scon =new ServiceConnection(){
+    private ServiceConnection Scon = new ServiceConnection() {
 
-        public void onServiceConnected(ComponentName name, IBinder
-                binder) {
-            mServ = ((MusicService.ServiceBinder)binder).getService();
+        public void onServiceConnected(ComponentName name,
+                IBinder
+                        binder) {
+            mServ = ((MusicService.ServiceBinder) binder).getService();
         }
 
         public void onServiceDisconnected(ComponentName name) {
@@ -128,19 +183,20 @@ public class Menu extends AppCompatActivity {
         }
     };
 
-    void doBindService(){
-        bindService(new Intent(this,MusicService.class),
+    void doBindService() {
+        bindService(new Intent(this,
+                        MusicService.class),
                 Scon,
                 Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
-    void doUnbindService()
-    {
-        if(mIsBound)
-        {
+    void doUnbindService() {
+        if (mIsBound) {
             unbindService(Scon);
             mIsBound = false;
         }
     }
+
 }
+

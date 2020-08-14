@@ -41,15 +41,17 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
         }
 
 
-        mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+        if (mPlayer != null) {
+            mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 
-            public boolean onError(MediaPlayer mp, int what, int
-                    extra) {
+                public boolean onError(MediaPlayer mp, int what, int
+                        extra) {
 
-                onError(mPlayer, what, extra);
-                return true;
-            }
-        });
+                    onError(mPlayer, what, extra);
+                    return true;
+                }
+            });
+        }
     }
 
     @Override

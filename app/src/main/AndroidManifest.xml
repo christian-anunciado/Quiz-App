@@ -11,13 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"
-            android:screenOrientation="portrait"/>
-            <!--android:parentActivityName=".Menu"-->
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait" />
+
 
         <activity
             android:name=".CategoryActivity"
+            android:parentActivityName=".Menu"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".DashBoardAcitvity"
             android:screenOrientation="portrait"
@@ -36,6 +39,7 @@
             android:label="Pinoy Quiz"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarThemeOnly" />
+
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
@@ -47,8 +51,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".MusicService"
-            android:enabled="true"/>
+        <service
+            android:name=".MusicService"
+            android:enabled="true" />
     </application>
 
 </manifest>

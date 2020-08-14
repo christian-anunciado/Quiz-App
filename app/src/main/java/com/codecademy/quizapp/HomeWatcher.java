@@ -18,6 +18,9 @@ public class HomeWatcher {
         mFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
     }
 
+
+
+
     public void setOnHomePressedListener(OnHomePressedListener listener) {
         mListener = listener;
         mRecevier = new InnerRecevier();

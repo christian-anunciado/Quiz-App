@@ -8,12 +8,12 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,16 +21,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    Button editName,createNew;
-    Switch music,sound;
-
+    Button editName, createNew;
+    SwitchMaterial music, sound;
+    HomeWatcher mHomeWatcher = new HomeWatcher(this);
 
     private String NAME;
-    private boolean MUSIC,SOUND;
+    private boolean MUSIC, SOUND;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,21 +45,49 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         loadData();
+        if (MUSIC) {
+            doBindService();
+            Intent i = new Intent(SettingsActivity.this,
+                    MusicService.class);
+            startService(i);
+            mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
+                @Override
+                public void onHomePressed() {
+                    if (mServ != null) {
+                        mServ.pauseMusic();
+                    }
+                }
+                @Override
+                public void onHomeLongPressed() {
+                    if (mServ != null) {
+                        mServ.pauseMusic();
+                    }
+                }
+            });
+            mHomeWatcher.startWatch();
+        }
+
 
 
         music.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
                 if (isChecked) {
-                    Toast.makeText(SettingsActivity.this,"Music On",Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(SettingsActivity.this, MusicService.class);
+                    Toast.makeText(SettingsActivity.this,
+                            "Music On",
+                            Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(SettingsActivity.this,
+                            MusicService.class);
                     startService(i);
                     doBindService();
                     MUSIC = true;
-                }
-                else {
-                    Toast.makeText(SettingsActivity.this,"Music Off",Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(SettingsActivity.this, MusicService.class);
+                } else {
+                    Toast.makeText(SettingsActivity.this,
+                            "Music Off",
+                            Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(SettingsActivity.this,
+                            MusicService.class);
                     stopService(i);
                     doUnbindService();
                     MUSIC = false;
@@ -70,14 +99,18 @@ public class SettingsActivity extends AppCompatActivity {
 
         sound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
                 if (isChecked) {
-                    Toast.makeText(SettingsActivity.this,"Sound On",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this,
+                            "Sound On",
+                            Toast.LENGTH_SHORT).show();
                     SOUND = true;
 
-                }
-                else {
-                    Toast.makeText(SettingsActivity.this,"Sound Off",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(SettingsActivity.this,
+                            "Sound Off",
+                            Toast.LENGTH_SHORT).show();
                     SOUND = false;
                 }
                 saveData();
@@ -101,41 +134,52 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(getApplicationContext(),Menu.class);
+
         doUnbindService();
+        Intent i = new Intent(SettingsActivity.this, Menu.class);
         startActivity(i);
         finish();
-        super.onBackPressed();
     }
 
     public void saveData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("mData",MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("mData",
+                MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("name",NAME);
-        editor.putBoolean("music",MUSIC);
-        editor.putBoolean("sound",SOUND);
+        editor.putString("name",
+                NAME);
+        editor.putBoolean("music",
+                MUSIC);
+        editor.putBoolean("sound",
+                SOUND);
         editor.commit();
     }
+
     public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("mData", MODE_PRIVATE);
-        NAME = sharedPreferences.getString("name", "");
-        MUSIC = sharedPreferences.getBoolean("music",true);
-        SOUND = sharedPreferences.getBoolean("sound",true);
+        SharedPreferences sharedPreferences = getSharedPreferences("mData",
+                MODE_PRIVATE);
+        NAME = sharedPreferences.getString("name",
+                "");
+        MUSIC = sharedPreferences.getBoolean("music",
+                true);
+        SOUND = sharedPreferences.getBoolean("sound",
+                true);
 
         music.setChecked(MUSIC);
         sound.setChecked(SOUND);
     }
 
     public void clearData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("mData",MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("mData",
+                MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.commit();
     }
 
-    public void setEditNameName(){
+    public void setEditNameName() {
         setTheme(R.style.NoActionBarTheme);
-        View view = getLayoutInflater().inflate(R.layout.dialog_edit_name,null);
+        View view = getLayoutInflater().inflate(R.layout.dialog_edit_name,
+                null);
 
         final EditText editText = (EditText) view.findViewById(R.id.dialog_et);
         final TextInputLayout textInputLayout = (TextInputLayout) view.findViewById(R.id.dialog_tf);
@@ -143,7 +187,8 @@ public class SettingsActivity extends AppCompatActivity {
         final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(SettingsActivity.this);
         dialog.setView(view);
         dialog.setCancelable(false);
-        dialog.setPositiveButton("Change", null);
+        dialog.setPositiveButton("Change",
+                null);
 
         dialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
@@ -163,15 +208,17 @@ public class SettingsActivity extends AppCompatActivity {
                 positive.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (editText.getText().toString().isEmpty()){
+                        if (editText.getText().toString().isEmpty()) {
                             textInputLayout.setError("Field is empty!");
                             textInputLayout.clearFocus();
                             editText.clearFocus();
-                        }else {
+                        } else {
                             NAME = editText.getText().toString().trim();
                             mAlertDialog.dismiss();
                             saveData();
-                            Toast.makeText(SettingsActivity.this,"Success",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SettingsActivity.this,
+                                    "Success",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -184,9 +231,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    public void setCreateNew(){
+    public void setCreateNew() {
         setTheme(R.style.NoActionBarTheme);
-        View view = getLayoutInflater().inflate(R.layout.dialog_edit_name,null);
+        View view = getLayoutInflater().inflate(R.layout.dialog_edit_name,
+                null);
 
         final TextView textView = (TextView) view.findViewById(R.id.dialog_tv);
         final EditText editText = (EditText) view.findViewById(R.id.dialog_et);
@@ -196,7 +244,8 @@ public class SettingsActivity extends AppCompatActivity {
         final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(SettingsActivity.this);
         dialog.setView(view);
         dialog.setCancelable(false);
-        dialog.setPositiveButton("Create", null);
+        dialog.setPositiveButton("Create",
+                null);
 
         dialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
@@ -216,11 +265,11 @@ public class SettingsActivity extends AppCompatActivity {
                 positive.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (editText.getText().toString().isEmpty()){
+                        if (editText.getText().toString().isEmpty()) {
                             textInputLayout.setError("Field is empty!");
                             textInputLayout.clearFocus();
                             editText.clearFocus();
-                        }else {
+                        } else {
                             NAME = editText.getText().toString().trim();
 
                             final MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(SettingsActivity.this);
@@ -236,7 +285,9 @@ public class SettingsActivity extends AppCompatActivity {
                                             NAME = editText.getText().toString().trim();
                                             mAlertDialog.dismiss();
                                             clearData();
-                                            Toast.makeText(SettingsActivity.this,"Success",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SettingsActivity.this,
+                                                    "Success",
+                                                    Toast.LENGTH_SHORT).show();
                                             saveData();
                                         }
                                     });
@@ -265,11 +316,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     private boolean mIsBound = false;
     private MusicService mServ;
-    private ServiceConnection Scon =new ServiceConnection(){
+    private ServiceConnection Scon = new ServiceConnection() {
 
-        public void onServiceConnected(ComponentName name, IBinder
-                binder) {
-            mServ = ((MusicService.ServiceBinder)binder).getService();
+        public void onServiceConnected(ComponentName name,
+                IBinder
+                        binder) {
+            mServ = ((MusicService.ServiceBinder) binder).getService();
         }
 
         public void onServiceDisconnected(ComponentName name) {
@@ -277,33 +329,48 @@ public class SettingsActivity extends AppCompatActivity {
         }
     };
 
-    void doBindService(){
-        bindService(new Intent(this,MusicService.class),
+    void doBindService() {
+        bindService(new Intent(this,
+                        MusicService.class),
                 Scon,
                 Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
-    void doUnbindService()
-    {
-        if(mIsBound)
-        {
+    void doUnbindService() {
+        if (mIsBound) {
             unbindService(Scon);
             mIsBound = false;
         }
     }
 
 
-
     @Override
     protected void onPause() {
+
         super.onPause();
-        mServ.pauseMusic();
+        PowerManager pm = (PowerManager)
+                getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = false;
+        if (pm != null) {
+            isScreenOn = pm.isInteractive();
+        }
+
+        if (!isScreenOn) {
+            if (mServ != null) {
+                mServ.pauseMusic();
+            }
+        }
+
+
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        mServ.resumeMusic();
+    protected void onResume() {
+        super.onResume();
+        if (mServ != null) {
+            mServ.resumeMusic();
+        }
+
     }
 }
