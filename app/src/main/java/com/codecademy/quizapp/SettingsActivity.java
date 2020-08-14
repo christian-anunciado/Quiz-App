@@ -19,15 +19,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SettingsActivity extends AppCompatActivity {
 
     Button editName, createNew;
-    SwitchMaterial music, sound;
+    SwitchCompat music, sound;
     HomeWatcher mHomeWatcher = new HomeWatcher(this);
 
     private String NAME;
@@ -167,6 +167,7 @@ public class SettingsActivity extends AppCompatActivity {
         music.setChecked(MUSIC);
         sound.setChecked(SOUND);
     }
+
 
     public void clearData() {
         SharedPreferences sharedPreferences = getSharedPreferences("mData",

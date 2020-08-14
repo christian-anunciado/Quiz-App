@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/vectorstock_5222239"
+    tools:context="com.codecademy.quizapp.ScoreActivity">
+
+    <TextView
+        android:id="@+id/activity_score_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee"
+        android:gravity="center"
+        android:text="Score"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="35sp"
+        />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/activity_score_materialCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="10dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Average Scores"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textSize="23sp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:padding="20dp">
+
+            <app.futured.donut.DonutProgressView
+                android:id="@+id/activity_score_donut"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                app:donut_animationDuration="2000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="40"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="50sp"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_score_donut"
+                app:layout_constraintEnd_toEndOf="@+id/activity_score_donut"
+                app:layout_constraintStart_toStartOf="@+id/activity_score_donut"
+                app:layout_constraintTop_toTopOf="@+id/activity_score_donut" />
+
+            <TextView
+                android:id="@+id/activity_score_textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Bugtong"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/activity_score_textView2"
+                app:layout_constraintStart_toEndOf="@+id/activity_score_donut"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/activity_score_textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Food"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@id/activity_score_textView3"
+                app:layout_constraintStart_toEndOf="@+id/activity_score_donut"
+                app:layout_constraintTop_toBottomOf="@id/activity_score_textView1" />
+
+            <TextView
+                android:id="@+id/activity_score_textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="History"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/activity_score_textView4"
+                app:layout_constraintStart_toEndOf="@+id/activity_score_donut"
+                app:layout_constraintTop_toBottomOf="@+id/activity_score_textView2" />
+
+            <TextView
+                android:id="@+id/activity_score_textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Geography"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/activity_score_donut"
+                app:layout_constraintTop_toBottomOf="@id/activity_score_textView3" />
+
+            <ProgressBar
+                android:id="@+id/activity_score_progressBar1"
+                style="?android:progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:indeterminate="false"
+                android:max="50"
+                android:progress="50"
+                android:progressTint="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_score_textView1"
+                app:layout_constraintEnd_toStartOf="@id/activity_score_textView_average_score1"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/activity_score_textView1"
+                app:layout_constraintTop_toTopOf="@+id/activity_score_textView1" />
+
+            <ProgressBar
+                android:id="@+id/activity_score_progressBar2"
+                style="?android:progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:max="50"
+                android:progress="50"
+                android:progressTint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_score_textView2"
+                app:layout_constraintEnd_toStartOf="@id/activity_score_textView_average_score2"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/activity_score_textView2"
+                app:layout_constraintTop_toTopOf="@+id/activity_score_textView2" />
+
+            <ProgressBar
+                android:id="@+id/activity_score_progressBar3"
+                style="?android:progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:max="50"
+                android:progress="50"
+                android:progressTint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_score_textView3"
+                app:layout_constraintEnd_toStartOf="@id/activity_score_textView_average_score3"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/activity_score_textView3"
+                app:layout_constraintTop_toTopOf="@+id/activity_score_textView3" />
+
+            <ProgressBar
+                android:id="@+id/activity_score_progressBar4"
+                style="?android:progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:max="50"
+                android:progress="50"
+                android:progressTint="@color/colorAccentDark"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_score_textView4"
+                app:layout_constraintEnd_toStartOf="@id/activity_score_textView_average_score4"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/activity_score_textView4"
+                app:layout_constraintTop_toTopOf="@+id/activity_score_textView4" />
+
+            <TextView
+                android:id="@+id/activity_score_textView_average_score1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="10"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_score_progressBar1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/activity_score_progressBar1" />
+
+            <TextView
+                android:id="@+id/activity_score_textView_average_score2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="10"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_score_progressBar2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/activity_score_progressBar2" />
+
+            <TextView
+                android:id="@+id/activity_score_textView_average_score3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="10"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_score_progressBar3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/activity_score_progressBar3" />
+
+            <TextView
+                android:id="@+id/activity_score_textView_average_score4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="10"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_score_progressBar4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/activity_score_progressBar4" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:id="@+id/activity_score_Button1"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="start"
+        android:text="Bugtong"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:padding="10dp"
+        android:textSize="20sp"
+         />
+
+    <Button
+        android:id="@+id/activity_score_Button2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Food"
+        android:padding="10dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorAccent"
+        android:gravity="start"
+        android:textSize="20sp"
+         />
+
+    <Button
+        android:id="@+id/activity_score_Button3"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="History"
+        android:padding="10dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:gravity="start"
+        android:textSize="20sp"
+         />
+
+    <Button
+        android:id="@+id/activity_score_Button4"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Geography"
+        android:padding="10dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorAccentDark"
+        android:gravity="start"
+        android:textSize="20sp"
+         />
+
+
+</LinearLayout>

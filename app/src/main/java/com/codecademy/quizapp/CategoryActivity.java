@@ -1,7 +1,13 @@
 package com.codecademy.quizapp;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.PowerManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -18,6 +24,8 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
     private String key = "CATEGORY";
 
     private MusicService mServ;
+    private boolean MUSIC;
+    private boolean SOUND;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +37,10 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
         geography = findViewById(R.id.btn_category_geography);
         random = findViewById(R.id.btn_category_random);
         play = findViewById(R.id.btn_category_play);
+
+        loadData();
+        if(MUSIC)
+        doBindService();
 
         bugtong.setOnClickListener(this);
         food.setOnClickListener(this);
@@ -78,6 +90,8 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
     }
     @Override
     public void onBackPressed() {
+        if(MUSIC)
+        doUnbindService();
         Intent i = new Intent(CategoryActivity.this, Menu.class);
         startActivity(i);
         finish();
@@ -92,6 +106,25 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        PowerManager pm = (PowerManager)
+                getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = false;
+        if (pm != null) {
+            isScreenOn = pm.isInteractive();
+        }
+
+        if (!isScreenOn) {
+            if (mServ != null) {
+                mServ.pauseMusic();
+            }
+        }
+
+
+    }
     void defaultOption() {
         ArrayList<Button> options = new ArrayList<Button>();
         options.add(0, bugtong);
@@ -108,5 +141,44 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
     void selectedOption(Button btn) {
         defaultOption();
         btn.setBackground(ContextCompat.getDrawable(this, R.drawable.button_selected_bg));
+    }
+    private ServiceConnection Scon = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName name,
+                IBinder
+                        binder) {
+            mServ = ((MusicService.ServiceBinder) binder).getService();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            mServ = null;
+        }
+    };
+
+    private boolean mIsBound = false;
+
+    void doBindService() {
+        bindService(new Intent(this,
+                        MusicService.class),
+                Scon,
+                Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
+
+    private void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("mData",
+                MODE_PRIVATE);
+
+        MUSIC = sharedPreferences.getBoolean("music",
+                true);
+        SOUND = sharedPreferences.getBoolean("sound",
+                true);
+    }
+
+    void doUnbindService() {
+        if (mIsBound) {
+            unbindService(Scon);
+            mIsBound = false;
+        }
     }
 }

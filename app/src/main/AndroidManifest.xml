@@ -11,16 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ScoreActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarThemeOnly"/>
         <activity
             android:name=".SettingsActivity"
             android:screenOrientation="portrait" />
-
-
         <activity
             android:name=".CategoryActivity"
             android:parentActivityName=".Menu"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".DashBoardAcitvity"
             android:screenOrientation="portrait"
@@ -39,7 +39,6 @@
             android:label="Pinoy Quiz"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarThemeOnly" />
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"

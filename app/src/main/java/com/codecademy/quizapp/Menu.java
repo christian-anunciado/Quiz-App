@@ -50,8 +50,6 @@ public class Menu extends AppCompatActivity {
         loadData();
 
 
-
-
         if (MUSIC) {
             Intent i = new Intent(Menu.this,
                     MusicService.class);
@@ -65,6 +63,7 @@ public class Menu extends AppCompatActivity {
                         mServ.pauseMusic();
                     }
                 }
+
                 @Override
                 public void onHomeLongPressed() {
                     if (mServ != null) {
@@ -85,6 +84,16 @@ public class Menu extends AppCompatActivity {
                 finish();
                 doUnbindService();
 
+            }
+        });
+
+        stats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Menu.this, ScoreActivity.class);
+                startActivity(i);
+                finish();
+                doUnbindService();
             }
         });
 
@@ -137,6 +146,7 @@ public class Menu extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -153,11 +163,11 @@ public class Menu extends AppCompatActivity {
         if (mTIME + 2000 > System.currentTimeMillis()) {
             toast.cancel();
             Intent music = new Intent();
-        music.setClass(this,
-                MusicService.class);
-        stopService(music);
-        mHomeWatcher.stopWatch();
-        doUnbindService();
+            music.setClass(this,
+                    MusicService.class);
+            stopService(music);
+            mHomeWatcher.stopWatch();
+            doUnbindService();
             super.onBackPressed();
         } else {
             toast = Toast.makeText(Menu.this,
