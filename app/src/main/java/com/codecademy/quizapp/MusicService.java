@@ -16,7 +16,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
     private int length = 0;
 
 
-    public  MusicService() {
+    public MusicService() {
 
     }
 
@@ -27,27 +27,32 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
     }
 
 
-
     @Override
     public void onCreate() {
         super.onCreate();
 
-        mPlayer = MediaPlayer.create(MusicService.this, R.raw.bg_song);
+        mPlayer = MediaPlayer.create(MusicService.this,
+                R.raw.bg_song);
         mPlayer.setOnErrorListener(this);
 
         if (mPlayer != null) {
             mPlayer.setLooping(true);
-            mPlayer.setVolume(50, 50);
+            mPlayer.setVolume(50,
+                    50);
         }
 
 
         if (mPlayer != null) {
             mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 
-                public boolean onError(MediaPlayer mp, int what, int
-                        extra) {
+                public boolean onError(MediaPlayer mp,
+                        int what,
+                        int
+                                extra) {
 
-                    onError(mPlayer, what, extra);
+                    onError(mPlayer,
+                            what,
+                            extra);
                     return true;
                 }
             });
@@ -55,7 +60,9 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent,
+            int flags,
+            int startId) {
         if (mPlayer != null) {
             mPlayer.start();
         }
@@ -65,69 +72,77 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
     public void pauseMusic() {
         if (mPlayer != null) {
 
-                mPlayer.pause();
-                length = mPlayer.getCurrentPosition();
+            mPlayer.pause();
+            length = mPlayer.getCurrentPosition();
+            stopMusic();
 
         }
     }
 
     public void resumeMusic() {
+
         if (mPlayer != null) {
             if (!mPlayer.isPlaying()) {
                 mPlayer.seekTo(length);
                 mPlayer.start();
             }
+        } else {
+            onCreate();
+            resumeMusic();
         }
-    }
-
-    public void startMusic() {
-        mPlayer = MediaPlayer.create(MusicService.this, R.raw.bg_song);
-        mPlayer.setOnErrorListener(this);
-
-        if (mPlayer != null) {
-            mPlayer.setLooping(true);
-            mPlayer.start();
         }
 
-    }
+        public void startMusic () {
+            mPlayer = MediaPlayer.create(MusicService.this,
+                    R.raw.bg_song);
+            mPlayer.setOnErrorListener(this);
 
-    public void stopMusic() {
-        if (mPlayer != null) {
-            mPlayer.stop();
-            mPlayer.release();
-            mPlayer = null;
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mPlayer != null) {
-            try {
-                stopMusic();
-            } finally {
-                mPlayer = null;
+            if (mPlayer != null) {
+                mPlayer.setLooping(true);
+                mPlayer.start();
             }
+
         }
-    }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return mBinder;
-    }
-
-    public boolean onError(MediaPlayer mp, int what, int extra) {
-
-        Toast.makeText(this, "Music player failed", Toast.LENGTH_SHORT).show();
-        if (mPlayer != null) {
-            try {
+        public void stopMusic () {
+            if (mPlayer != null) {
                 mPlayer.stop();
                 mPlayer.release();
-            } finally {
                 mPlayer = null;
             }
         }
-        return false;
+
+        @Override
+        public void onDestroy () {
+            super.onDestroy();
+            if (mPlayer != null) {
+                try {
+                    stopMusic();
+                } finally {
+                    mPlayer = null;
+                }
+            }
+        }
+
+        @Nullable
+        @Override
+        public IBinder onBind (Intent intent){
+            return mBinder;
+        }
+
+        public boolean onError (MediaPlayer mp,int what, int extra){
+
+            Toast.makeText(this,
+                    "Music player failed",
+                    Toast.LENGTH_SHORT).show();
+            if (mPlayer != null) {
+                try {
+                    mPlayer.stop();
+                    mPlayer.release();
+                } finally {
+                    mPlayer = null;
+                }
+            }
+            return false;
+        }
     }
-}
