@@ -66,10 +66,10 @@ public class ScoreActivity extends AppCompatActivity {
         tv_historyAverage.setText(String.valueOf(Math.round(historyAverage)));
         tv_geographyAverage.setText(String.valueOf(Math.round(geographyAverage)));
 
-        pb_bugtongAverage.setMax(Math.round(Math.round(totalAverage)));
-        pb_foodAverage.setMax(Math.round(Math.round(totalAverage)));
-        pb_historyAverage.setMax(Math.round(Math.round(totalAverage)));
-        pb_geographyAverage.setMax(Math.round(Math.round(totalAverage)));
+        pb_bugtongAverage.setMax(Math.round(totalAverage) / 2);
+        pb_foodAverage.setMax(Math.round(totalAverage) / 2);
+        pb_historyAverage.setMax(Math.round(totalAverage) / 2);
+        pb_geographyAverage.setMax(Math.round(totalAverage) / 2);
 
         progressAnimator.add(ObjectAnimator.ofInt(pb_bugtongAverage,"progress",0,Math.round(bugtongAverage)));
         progressAnimator.add(ObjectAnimator.ofInt(pb_foodAverage,"progress",0,Math.round(foodAverage)));
